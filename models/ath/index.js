@@ -1,6 +1,5 @@
 const mongoose = require('mongoose'),
-    crypto = require('crypto'),
-    passportLocalMongoose = require('passport-local-mongoose');
+    crypto = require('crypto');
 
 const usrSchema = new mongoose.Schema({
     

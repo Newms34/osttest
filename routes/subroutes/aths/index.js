@@ -9,10 +9,10 @@ const router = express.Router(),
         session = require('express-session');
 mongoose.Promise = Promise;
 
-router.get('/checkMod', this.authbit, isMod, (req, res, next) => {
+router.get('/checkMod', (req, res, next) => {
     res.send('ok')
 })
-router.get('/getUsr', this.authbit, (req, res, next) => {
+router.get('/getUsr',(req, res, next) => {
     mongoose.model('User').findOne({ _id: req.session.passport.user }, function(err, usr) {
         usr.salt = null;
         usr.pass = null;

@@ -16,21 +16,16 @@ const sesh = session({
     saveUninitialized: true,
 });
 app.use(sesh);
-app.use(passport.initialize());
-app.use(passport.session());
 
 
 const mongoose = require('mongoose'),
     models = require('./models/');
 
-if (!keys.AWS_NODE_ENV || keys.AWS_NODE_ENV != 'prod') {
+if (!process.env.NODE_ENV || process.env.NODE_ENV != 'prod') {
     //just some quick env check. If we're developing locally, go ahead and use our local db. Otherwise, use the mlab db.
     //in addition, if local AND windows, set our school to the fake school 'woghartz'
     mongoose.connect('mongodb://localhost:27017/linton');
     console.log('Using local db')
-    if (!keys.OS || !keys.OS.indexOf('Windows') > -1) {
-        keys.MATHAPP_SCHOOL = 'woghartz';
-    }
 } else {
     console.log('Using REMOTE db')
     mongoose.connect(keys.MONGODB_URI);
@@ -39,9 +34,6 @@ const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function(e) {
     console.log('Database connected!')
-    // console.log('MODELS AND SCHEMA',gridfs.model,gridfs.schema)
-    // Audio = gridfs.model;
-    // console.log('gridfs model',Audio)
 })
 
 app.use(cookieParser('spero eam beatam esse'))
@@ -50,7 +42,6 @@ app.use(bodyParser.json({ limit: '500mb' }));
 const routes = require('./routes');
 app.set('view engine', 'html');
 app.set('views', path.join(__dirname, 'views'));
-app.set('io', io)
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'views')));
 app.all('/*', function(req, res, next) {
