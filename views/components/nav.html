@@ -1,0 +1,30 @@
+<nav class="navbar col-style-one is-fixed-top" role="navigation" aria-label="main navigation" ng-controller='nav-cont'>
+    <div class="navbar-brand">
+        <a role="button" class="navbar-burger col-style-one-hoverable"  ng-class='{"is-active":mobActive}' aria-label="menu" aria-expanded="false" ng-click='mobActive=!mobActive'>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+    <div class="navbar-menu" ng-class='{"is-active":mobActive}' ng-click='mobActive=false'>
+        <div class="navbar-start" ng-if='user'>
+            <a class="navbar-item col-style-one-hoverable" href='#' ui-sref='app.view' ui-sref-active='is-active'>
+                <h3>View</h3>
+            </a>
+
+            <a class="navbar-item col-style-one-hoverable" href='#' ui-sref='app.create' ui-sref-active='is-active'>
+                <h3>Create</h3>
+            </a>
+            <a class="navbar-item col-style-one-hoverable" href='#' ui-sref='app.edit' ui-sref-active='is-active'>
+                <h3>Edit</h3>
+            </a>
+            <!-- <a class="navbar-item" href='#' ui-sref='app.help'>
+                <h3>Help</h3>
+            </a> -->
+        </div>
+        <!-- <div class='is-fullwidth' ng-if='!user'>
+            <div class='load-txt is-size-5'>Fetching User<span>.</span><span>.</span><span>.</span></div>
+        </div> -->
+    </div>
+
+</nav>
