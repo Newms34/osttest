@@ -28,7 +28,7 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV != 'prod') {
     console.log('Using local db')
 } else {
     console.log('Using REMOTE db')
-    mongoose.connect(keys.MONGODB_URI);
+    mongoose.connect(process.env.MONGODB_URI);
 }
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
