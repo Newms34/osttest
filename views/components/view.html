@@ -16,8 +16,8 @@
     			<th>Interests</th>
     			<th>Charities</th>
     			<th>Profile Image</th>
-    			<th>Drinks Alcohol</th>
-    			<th>Actions</th> -->
+    			<th>Drinks Alcohol</th>-->
+    			<th>Actions</th>
     		</tr>
     	</thead>
     	<tbody>
@@ -41,7 +41,10 @@
     			<td>{{ath.charities||'No charities'}}</td>
     			<td><img src="{{ath.profileImage}}"><div ng-if='!ath.profileImage'>(No profile image)</div></td>
     			<td>{{ath.alcohol?'Yes':'No'}}</td> -->
-    			<td><button class="button is-small is-link" title='View/Edit Athlete'><i class="fa fa-pencil"></i></button></td>
+    			<td>
+                    <button class="button is-small is-link" title='View/Edit Athlete' ng-click='view(ath._id)'><i class="fa fa-pencil"></i></button>
+                    <button class="button is-small is-danger" title='Remove Athlete' ng-click='remove(ath)'><i class="fa fa-trash"></i></button>
+                </td>
     		</tr>
     	</tbody>
     </table>

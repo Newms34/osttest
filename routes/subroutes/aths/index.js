@@ -34,9 +34,15 @@ router.get('/all',(req, res, next) => {
         res.send(all);
     })
 });
+//I know you wanted just 3 (presumably POST to create the athlete, PUT to edit it, and GET to get all athletes). I'm adding these for more functionality
 router.get('/one',(req,res,next)=>{
     mongoose.model('Ath').findOne({_id:req.query.id},function(err,resp){
         res.send(resp||'notFound');
+    })
+})
+router.delete('/one',(req,res,next)=>{
+    mongoose.model('Ath').findOne({_id:req.query.id}).remove(function(err,resp){
+        res.send('done');
     })
 })
 

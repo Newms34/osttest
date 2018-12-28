@@ -159,7 +159,11 @@ app.controller('create-cont', function($scope, $http, $state, demoFact) {
             if(stillNeed.length){
                 bulmabox.alert('Missing Information',`You're still missing some information. Please double-check all fields`)
             }else{
-                $http.post('/aths/new',$scope.newUser)
+                $http.post('/aths/new',$scope.newUser).then(r=>{
+                    bulmabox.alert('Submitted!','Your athlete has been submitted!',function(r){
+                        $state.go('app.view')
+                    })
+                })
             }
         }
     })
@@ -310,7 +314,11 @@ app.controller('edit-cont', function($scope, $http, $state,demoFact) {
                 bulmabox.alert('Missing Information',`You're still missing some information. Please double-check all fields`)
             }else{
                 $scope.editUser.id=theId;
-                $http.put('/aths/edit',$scope.editUser)
+                $http.put('/aths/edit',$scope.editUser).then(r=>{
+                    bulmabox.alert('Updated!','Your athlete has been updated!',function(r){
+                        $state.go('app.view')
+                    })
+                })
             }
         }
     })
@@ -345,6 +353,19 @@ app.controller('view-cont', function($scope, $http, $state,demoFact) {
         	return demoFact.allStates().find(cd=>cd.code==cc).name;
         }
         $scope.ms = ['Single','Married','Divorced','Widowed']
+        $scope.socMedProfs = ['facebook', 'twitter', 'instagram', 'youtube', 'twitch', 'snapchat']
+        $scope.view = i=>{
+        	window.location.href=`./edit?id=${i}`;
+        }
+        $scope.remove = a=>{
+        	bulmabox.confirm('Remove Athlete',`Are you sure you wish to delete ${a.name}?`,function(r){
+        		if(r && r!==null){
+        			$http.delete('/aths/one?id='+a._id).then(r=>{
+        				$state.go($state.current, {}, {reload: true});
+        			})
+        		}
+        	})
+        }
     })
 const states = [
 {"name": "Afghanistan", "code": "AF"},

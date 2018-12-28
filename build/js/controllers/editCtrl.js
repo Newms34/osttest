@@ -135,7 +135,11 @@ app.controller('edit-cont', function($scope, $http, $state,demoFact) {
                 bulmabox.alert('Missing Information',`You're still missing some information. Please double-check all fields`)
             }else{
                 $scope.editUser.id=theId;
-                $http.put('/aths/edit',$scope.editUser)
+                $http.put('/aths/edit',$scope.editUser).then(r=>{
+                    bulmabox.alert('Updated!','Your athlete has been updated!',function(r){
+                        $state.go('app.view')
+                    })
+                })
             }
         }
     })

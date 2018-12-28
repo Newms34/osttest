@@ -114,7 +114,11 @@ app.controller('create-cont', function($scope, $http, $state, demoFact) {
             if(stillNeed.length){
                 bulmabox.alert('Missing Information',`You're still missing some information. Please double-check all fields`)
             }else{
-                $http.post('/aths/new',$scope.newUser)
+                $http.post('/aths/new',$scope.newUser).then(r=>{
+                    bulmabox.alert('Submitted!','Your athlete has been submitted!',function(r){
+                        $state.go('app.view')
+                    })
+                })
             }
         }
     })
