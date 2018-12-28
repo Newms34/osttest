@@ -6,9 +6,7 @@ const router = express.Router(),
     async = require('async'),
     fs = require('fs'),
     mongoose = require('mongoose');
-
-
-    router.use('/ath', require('./subroutes/aths'));
+    router.use('/aths', require('./subroutes/aths'));
     router.get('*', function(req, res, next) {
         console.log('trying to get main page!')
         res.sendFile('index.html', { root: './views' })

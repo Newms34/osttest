@@ -1,3 +1,240 @@
-<div ng-controller='create-cont'>
-    the creation page
+<div ng-controller='create-cont' class='is-full columns'>
+    <div class="column is-one-fifth"></div>
+    <div class="column is-three-fifths panel">
+        <div class="panel-heading has-background-dark has-text-white has-text-weight-bold">Add New Athlete</div>
+        <div class="panel-block blocky">
+            <br>
+            <div class="is-full is-italic is-size-5 has-text-centered">Tell us about the athlete!</div>
+            <div class="is-full is-italic">{{catDescs[currCat]}}</div>
+            <div class="column is-full has-text-centered">
+                    <button class="button is-link is-large" ng-if='getPropPos()>0' ng-click='changeProp(false)'><i class="fa fa-arrow-left"></i> Previous</button>
+                    <button class="button is-link is-large" ng-if='getPropPos()<cats.length-1' ng-click='changeProp(true)'><i class="fa fa-arrow-right"></i> Next</button>
+                </div><br>
+            <div class="columns is-multiline">
+                <div class="column is-full columns is-multiline" ng-show='currCat=="demog"'>
+                    <div class="column is-one-fifth notification is-size-5">Name (required):</div>
+                    <div class="column is-four-fifths">
+                        <p class="control">
+                            <input class="input" id='user-name' type="text" placeholder="First, what's your name?" ng-model='newUser.name.data'>
+                        </p>
+                    </div>
+                    <div class="column is-one-fifth notification is-size-5">Date of Birth:</div>
+                    <div class="column is-four-fifths">
+                        <p class="control">
+                            <input class="input" id='user-dob' type="date" placeholder="When were you born?" ng-model='tempBd' ng-change='updateDob(tempBd)'>
+                        </p>
+                    </div>
+                    <div class="column is-one-fifth notification is-size-5">Nationality (required):</div>
+                    <div class="column is-four-fifths">
+                        <div class="label">Where are you from?</div>
+                        <div class="select">
+                            <select ng-options='st.code as st.name for st in states' id='user-nationality' ng-model='newUser.nationality.data'></select>
+                        </div>
+                    </div>
+                    <div class="column is-one-fifth notification is-size-5">Gender:</div>
+                    <div class="column is-four-fifths">
+                        <p class="control">
+                            <input type="radio" ng-model='newUser.gender.data' ng-value='0' id='user-gender'> - Male <br>
+                            <input type="radio" ng-model='newUser.gender.data' ng-value='1'> - Female <br>
+                            <input type="radio" ng-model='newUser.gender.data' ng-value='2'> - Other <br>
+                        </p>
+                    </div>
+                    <div class="column is-one-fifth notification is-size-5">Marital Status:</div>
+                    <div class="column is-four-fifths">
+                        <p class="control">
+                            <input type="radio" ng-model='newUser.married.data' ng-value='0' id='user-married'> - Single <br>
+                            <input type="radio" ng-model='newUser.married.data' ng-value='1'> - Married <br>
+                            <input type="radio" ng-model='newUser.married.data' ng-value='2'> - Divorced <br>
+                            <input type="radio" ng-model='newUser.married.data' ng-value='3'> - Widowed <br>
+                        </p>
+                    </div>
+                </div>
+                <div class="column is-full columns is-multiline" ng-show='currCat=="sports"'>
+                    <div class="column is-one-fifth notification is-size-5">Association (required):</div>
+                    <div class="column is-four-fifths">
+                        <p class="control">
+                            <input class="input" id='user-association' type="text" placeholder="What professional association (NBA, NFL, etc.) do you play for?" ng-model='newUser.association.data'>
+                        </p>
+                    </div>
+                    <div class="column is-one-fifth notification is-size-5">Team (required):</div>
+                    <div class="column is-four-fifths">
+                        <p class="control">
+                            <input class="input" type="text" id='user-team' placeholder="What team do you play for?" ng-model='newUser.team.data'>
+                        </p>
+                    </div>
+                    <div class="column is-one-fifth notification is-size-5">Sports (required):</div>
+                    <div class="column is-four-fifths">
+                        <div class="label">What sports do you play?</div>
+                        <div class="select">
+                            <select ng-options='sp for sp in sports' ng-model='newSport' id='user-sports' ng-keydown='subNewSp($event)'></select>
+                        </div>
+                        <button class="button is-info" title='Add Sport' ng-click='newUser.sports.data.push(newSport)'><i class="fa fa-plus"></i></button>
+                        <table class='table'>
+                            <tr ng-repeat='sp in newUser.sports.data'>
+                                <td>
+                                    {{sp}}
+                                </td>
+                                <td>
+                                    <button class="button is-small is-danger" ng-click='newUser.sports.data.splice($index,1);' title='Remove Sport'><i class="fa fa-times"></i></button>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="column is-full columns is-multiline" ng-show='currCat==="socMed"'>
+                    <div class="column is-one-fifth notification is-size-5">Social Media Profiles:</div>
+                    <div class="column is-four-fifths">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Type:</th>
+                                    <th>Profile:</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat='p in socMedProfs'>
+                                    <td>{{p}}</td>
+                                    <td>
+                                        <input class="input" type="text" id='user-{{p}}' placeholder="Your {{p}} profile" ng-model='newUser[p].data'>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="column is-full columns  is-multiline" ng-show='currCat=="misc"'>
+                    <div class="column is-one-fifth notification is-size-5">About:</div>
+                    <div class="column is-four-fifths">
+                        <p class="control">
+                            <textarea class="textarea" id='user-about' placeholder="Tell us a little bit more about your athlete. (optional)" ng-model='newUser.about.data'></textarea>
+                        </p>
+                    </div>
+                    <div class="column is-one-fifth notification is-size-5">Pets:</div>
+                    <div class="column is-four-fifths">
+                        Does the athlete have any pets?
+                        <div class="columns is-multiline">
+                            <p class="column is-two-fifths control">
+                                <input class="input" type="text" id='user-pets' placeholder="Pet Name" ng-model='newPet.name'>
+                            </p>
+                            <p class="column is-two-fifths control">
+                                <input class="input" type="text" id='user-pets' placeholder="Pet Species (e.g., dog, cat, fish)" ng-model='newPet.species'>
+                            </p>
+                            <div class="column is-one-fifth"><button class="button is-info" title='Add this pet' ng-click='addPet(newPet)'><i class="fa fa-plus"></i></button></div>
+                            <div class="column is-full has-text-centered">
+                                <table class="table is-fullwidth" ng-show='newUser.pets.data.length'>
+                                    <thead>
+                                        <tr>
+                                            <th>&nbsp;</th>
+                                            <th>Pet Name</th>
+                                            <th>Pet Species</th>
+                                            <th>&nbsp;</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat='pt in newUser.pets.data'>
+                                            <td>{{getPetIcon(pt.species)}}</td>
+                                            <td>
+                                                {{pt.name}}
+                                            </td>
+                                            <td>
+                                                {{pt.species}}
+                                            </td>
+                                            <td>
+                                                <button class="button is-small is-danger" title='Remove pet' ng-click='newUser.pets.data.splice($index,1)'><i class="fa fa-times"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div ng-show='!newUser.pets.data.length'>No pets yet!</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column is-one-fifth notification is-size-5">Interests:</div>
+                    <div class="column is-four-fifths">
+                        Other interests/hobbies?
+                        <div class="columns is-multiline">
+                            <p class="column is-four-fifths control">
+                                <input class="input" type="text" id='user-pets' placeholder="Interest" ng-model='newInterest'>
+                            </p>
+                            <div class="column is-one-fifth"><button class="button is-info" title='Add this interest' ng-click='newUser.interests.data.push(newInterest)'><i class="fa fa-plus"></i></button></div>
+                            <div class="column is-full has-text-centered">
+                                <table class="table is-fullwidth" ng-show='newUser.interests.data.length'>
+                                    <thead>
+                                        <tr>
+                                            <th>Interest</th>
+                                            <th>&nbsp;</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat='intr in newUser.interests.data'>
+                                            <td>
+                                                {{intr}}
+                                            </td>
+                                            <td>
+                                                <button class="button is-small is-danger" title='Remove interest' ng-click='newUser.interests.data.splice($index,1)'><i class="fa fa-times"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div ng-show='!newUser.interests.data.length'>No interests yet!</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column is-one-fifth notification is-size-5">Charities:</div>
+                    <div class="column is-four-fifths">
+                        Any charities the athlete is linked to?
+                        <div class="columns is-multiline">
+                            <p class="column is-four-fifths control">
+                                <input class="input" type="text" id='user-pets' placeholder="Charity Name" ng-model='newCharity'>
+                            </p>
+                            <div class="column is-one-fifth"><button class="button is-info" title='Add this interest' ng-click='newUser.charities.data.push(newCharity)'><i class="fa fa-plus"></i></button></div>
+                            <div class="column is-full has-text-centered">
+                                <table class="table is-fullwidth" ng-show='newUser.charities.data.length'>
+                                    <thead>
+                                        <tr>
+                                            <th>Interest</th>
+                                            <th>&nbsp;</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat='intr in newUser.charities.data'>
+                                            <td>
+                                                {{intr}}
+                                            </td>
+                                            <td>
+                                                <button class="button is-small is-danger" title='Remove interest' ng-click='newUser.charities.data.splice($index,1)'><i class="fa fa-times"></i></button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div ng-show='!newUser.charities.data.length'>No interests yet!</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column is-one-fifth notification is-size-5">Profile Picture (link):</div>
+                    <div class="column is-four-fifths">
+                    	<img src="{{newUser.profileImage.data}}" ng-show='newUser.profileImage.data'>
+                        <p class="control">
+                            <input class="input" type="text" id='user-profileImage' placeholder="Link to a profile image" ng-model='newUser.profileImage.data'>
+                        </p>
+                    </div>
+                    <div class="column is-one-fifth notification is-size-5">Alcohol:</div>
+                    <div class="column is-four-fifths">
+                        <div class=''>
+                            Finally, does your athlete drink alcohol?
+                        </div>
+                        <p class="control">
+                            <input type="radio" ng-model='newUser.alcohol.data' ng-value='0' id='user-alcohol'> - Yes <br>
+                            <input type="radio" ng-model='newUser.alcohol.data' ng-value='1'> - No <br>
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="column is-full has-text-centered">
+                	<button class="button is-large is-info" ng-click="submitAthlete();"><i class="fa fa-check"></i>&nbsp; Submit New Athlete</button>
+                </div>
+                <!-- {{newUser}} -->
+            </div>
+        </div>
+    </div>
 </div>

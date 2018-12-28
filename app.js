@@ -24,7 +24,7 @@ const mongoose = require('mongoose'),
 if (!process.env.NODE_ENV || process.env.NODE_ENV != 'prod') {
     //just some quick env check. If we're developing locally, go ahead and use our local db. Otherwise, use the mlab db.
     //in addition, if local AND windows, set our school to the fake school 'woghartz'
-    mongoose.connect('mongodb://localhost:27017/linton');
+    mongoose.connect('mongodb://localhost:27017/ost');
     console.log('Using local db')
 } else {
     console.log('Using REMOTE db')

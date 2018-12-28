@@ -1,3 +1,48 @@
 <div ng-controller='view-cont'>
-    the view page
+    <table class="table is-fullwidth">
+    	<thead>
+    		<tr>
+    			<th>Name</th>
+    			<th>Date of Birth</th>
+    			<th>Sports Played</th>
+    			<th>Team</th>
+                <!-- <th>Gender</th>
+                <th>Nationality</th>
+                <th>Marital Status</th>
+                <th>Association</th>
+    			<th>Social Media</th>
+    			<th>Other Information</th>
+    			<th>Pets</th>
+    			<th>Interests</th>
+    			<th>Charities</th>
+    			<th>Profile Image</th>
+    			<th>Drinks Alcohol</th>
+    			<th>Actions</th> -->
+    		</tr>
+    	</thead>
+    	<tbody>
+    		<tr ng-repeat='ath in allAths'>
+    			<td>{{ath.name}}</td>
+                <td>{{ath.dob}}</td>
+    			<td>
+                    <div class="is-full" ng-repeat='sp in ath.sports'>{{sp}}</div>
+                </td>
+    			<td>{{ath.team}}</td>
+                <!-- <td>{{ath.gender==2?'Other':ath.gender==1?'Female':'Male'}}</td>
+                <td>{{gc(ath.nationality)}}</td>
+                <td>{{ms[ath.married]}}</td>
+                <td>{{ath.association}}</td>
+    			<td>
+                    <div class="is-full" ng-repeat='sm in socMedProfs' ng-show='!!ath[sm]'>{{sm}}</div>
+                </td>
+    			<td>{{ath.about||'No other info'}}</td>
+    			<td>{{ath.pets.length && ath.pets||'No pets'}}</td>
+    			<td>{{ath.interests||'No interests'}}</td>
+    			<td>{{ath.charities||'No charities'}}</td>
+    			<td><img src="{{ath.profileImage}}"><div ng-if='!ath.profileImage'>(No profile image)</div></td>
+    			<td>{{ath.alcohol?'Yes':'No'}}</td> -->
+    			<td><button class="button is-small is-link" title='View/Edit Athlete'><i class="fa fa-pencil"></i></button></td>
+    		</tr>
+    	</tbody>
+    </table>
 </div>
